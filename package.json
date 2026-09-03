@@ -1,6 +1,6 @@
 {
-  "name": "holepunch-types",
-  "version": "0.2.0",
+  "name": "@tetherto/holepunch-types",
+  "version": "0.3.0",
   "description": "TypeScript type definitions for Holepunch ecosystem modules: autobase, blind-pairing, hyperswarm, z32, b4a, and more.",
   "types": "@types/index.d.ts",
   "exports": {
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Drache93/holepunch-types"
+    "url": "https://github.com/tetherto/holepunch-types.git"
   },
   "keywords": [
     "types",
@@ -58,5 +58,9 @@
   },
   "dependencies": {
     "@types/node": "^24.3.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/tetherto/holepunch-types/issues"
+  },
+  "homepage": "https://github.com/tetherto/holepunch-types"
 }

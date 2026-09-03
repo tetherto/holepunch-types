@@ -1,4 +1,4 @@
 declare module "z32" {
-  export function decode(input: string): Uint8Array;
-  export function encode(input: Uint8Array): string;
+  export function encode(buf: Uint8Array): string;
+  export function decode(s: string, out?: Uint8Array): Buffer;
 }

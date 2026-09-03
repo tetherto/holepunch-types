@@ -1,14 +1,8 @@
 declare module "test-tmp" {
-  import test from "brittle";
+  import type { Test } from "brittle";
 
-  interface TestTmpOptions {
-    dir?: string;
-    name?: string;
-    order?: number;
-    force?: boolean;
-  }
-
-  function tmp(t: typeof test, options: TestTmpOptions): Promise<void>;
-
-  export = tmp;
+  export default function tmp(
+    t?: Test | null,
+    opts?: { dir?: string | null; name?: string | null; order?: number; force?: boolean },
+  ): Promise<string>;
 }

@@ -1,93 +1,53 @@
 declare module "corestore" {
-  import ReadyResource from "ready-resource";
-  import Hypercore from "hypercore";
-  import { Connection } from "hyperswarm";
+  import type { Duplex } from "node:stream";
 
-  interface ReplicateOptions {
-    live?: boolean;
-    download?: boolean;
-    upload?: boolean;
-    encrypted?: boolean;
-    noise?: boolean;
-    keyPair?: KeyPair;
-    onauthenticate?: (
-      remotePublicKey: Uint8Array,
-      cb: (err: Error | null, allowed: boolean) => void,
-    ) => void;
-  }
-
-  interface KeyPair {
-    publicKey: Uint8Array;
-    secretKey: Uint8Array;
-  }
-
-  interface CorestoreOptions {
-    primaryKey?: Uint8Array;
-    name?: string;
-    storage?: any;
-    valueEncoding?: string;
-    encryptionKey?: Uint8Array;
-    noise?: boolean;
-    keyPair?: KeyPair;
-    onauthenticate?: (
-      remotePublicKey: Uint8Array,
-      cb: (err: Error | null, allowed: boolean) => void,
-    ) => void;
-  }
-
-  interface GetCoreOptions {
-    name?: string | null;
-    key?: Uint8Array | null;
-    valueEncoding?: string | null;
-    encryptionKey?: Uint8Array | null;
-    noise?: boolean | null;
-    keyPair?: KeyPair | null;
-    onauthenticate?: (
-      remotePublicKey: Uint8Array,
-      cb: (err: Error | null, allowed: boolean) => void,
-    ) => void;
-  }
-
-  class Corestore extends ReadyResource {
-    constructor(storage: any, options?: CorestoreOptions);
-
-    // Core management
-    get(options?: GetCoreOptions): Hypercore;
-    get(key: Uint8Array | string): Hypercore;
-
-    // Key management
-    createKeyPair(name: string): Promise<KeyPair>;
-    getKeyPair(name: string): Promise<KeyPair | null>;
-
-    // Replication
-    replicate(options: ReplicateOptions): any;
-    replicate(stream: Connection): any;
-
-    // Storage management
+  export interface Hypercore {
+    readonly key: Buffer;
+    readonly discoveryKey: Buffer;
+    readonly length: number;
+    readonly byteLength: number;
+    readonly writable: boolean;
+    readonly opened: boolean;
+    readonly closed: boolean;
+    readonly peers: ReadonlyArray<unknown>;
     ready(): Promise<void>;
     close(): Promise<void>;
-    flush(): Promise<void>;
-
-    // Properties
-    readonly primaryKey: Uint8Array | null;
-    readonly name: string | null;
-    readonly storage: any;
-    readonly valueEncoding: string;
-    readonly encryptionKey: Uint8Array | null;
-    readonly noise: boolean;
-    readonly keyPair: KeyPair | null;
-
-    // Events
-    on(event: "ready", listener: () => void): this;
-    on(event: "close", listener: () => void): this;
-    on(event: "error", listener: (error: Error) => void): this;
-    on(event: string, listener: (...args: any[]) => void): this;
-
-    emit(event: "ready"): boolean;
-    emit(event: "close"): boolean;
-    emit(event: "error", error: Error): boolean;
-    emit(event: string, ...args: any[]): boolean;
+    get(index: number, opts?: Record<string, unknown>): Promise<Buffer | null>;
+    append(blocks: ReadonlyArray<Uint8Array> | Uint8Array): Promise<void>;
+    clear(start: number, end?: number, opts?: Record<string, unknown>): Promise<void>;
+    has(index: number): Promise<boolean>;
+    getUserData(key: string): Promise<Buffer | null>;
+    setUserData(key: string, value: Uint8Array): Promise<void>;
+    on(event: string, handler: (...args: unknown[]) => void): void;
+    off(event: string, handler: (...args: unknown[]) => void): void;
   }
 
-  export = Corestore;
+  export default class Corestore {
+    constructor(
+      storage: string | import("hypercore-storage").default,
+      opts?: Record<string, unknown>,
+    );
+    ready(): Promise<void>;
+    // rocksdb column families back sibling local stores (e.g. the worker's local HyperDB).
+    readonly storage: {
+      readonly rocks: { columnFamily(name: string): unknown };
+    };
+    // Deterministic: derived from the store's persisted primary key + name,
+    // so the same storage dir yields the same keypair on every open.
+    createKeyPair(name: string): Promise<{
+      readonly publicKey: Buffer;
+      readonly secretKey: Buffer;
+    }>;
+    // Namespaced session sharing this store's storage and replication.
+    namespace(name: string | Buffer): Corestore;
+    session(opts?: Record<string, unknown>): Corestore;
+    get(opts: { name: string; encryptionKey?: Buffer }): Hypercore;
+    get(opts: { key: Buffer; encryptionKey?: Buffer }): Hypercore;
+    get(key: Buffer): Hypercore;
+    // a boolean opens a fresh protocol stream (isInitiator) for piping two stores directly
+    replicate(target: Duplex | boolean): Duplex;
+    suspend(opts?: { readonly log?: (msg: string) => void }): Promise<void>;
+    resume(opts?: { readonly log?: (msg: string) => void }): Promise<void>;
+    close(): Promise<void>;
+  }
 }
