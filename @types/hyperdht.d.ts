@@ -1,9 +1,9 @@
-declare module "hyperdht/testnet.js" {
-  export type BootstrapNode = { readonly host: string; readonly port: number };
+declare module 'hyperdht/testnet.js' {
+  export type BootstrapNode = { readonly host: string; readonly port: number }
 
   export class Testnet {
-    readonly bootstrap: ReadonlyArray<BootstrapNode>;
-    destroy(): Promise<void>;
+    readonly bootstrap: ReadonlyArray<BootstrapNode>
+    destroy(): Promise<void>
   }
 
   // A local, ephemeral DHT of `size` nodes for tests — no real network
@@ -11,6 +11,6 @@ declare module "hyperdht/testnet.js" {
   // down automatically.
   export default function createTestnet(
     size?: number,
-    opts?: { readonly teardown?: (fn: () => unknown) => void },
-  ): Promise<Testnet>;
+    opts?: { readonly teardown?: (fn: () => unknown) => void }
+  ): Promise<Testnet>
 }

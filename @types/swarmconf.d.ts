@@ -1,8 +1,8 @@
-declare module "@tetherto/swarmconf" {
-  import type HyperConf from "hyperconf";
+declare module '@tetherto/swarmconf' {
+  import type HyperConf from 'hyperconf'
 
   export interface SwarmConfig {
-    readonly blindRelays: ReadonlyArray<Buffer>;
+    readonly blindRelays: ReadonlyArray<Buffer>
   }
 
   // Reactive swarm configuration backed by a hypercore in the supplied
@@ -12,6 +12,6 @@ declare module "@tetherto/swarmconf" {
   export default class Swarmconf extends HyperConf<SwarmConfig> {
     // `store` is a Corestore instance. Typed as `unknown` to avoid coupling
     // this ambient declaration to the `corestore` module shape.
-    constructor(store: unknown);
+    constructor(store: unknown)
   }
 }
