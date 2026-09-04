@@ -10,19 +10,19 @@ declare module 'protomux' {
     onclose?: () => void
   }
 
-  export interface MessageOpts {
-    encoding: unknown
-    onmessage: (data: Buffer) => void
+  export interface MessageOpts<T> {
+    encoding: import('compact-encoding').Codec<T>
+    onmessage: (data: T) => void
   }
 
-  export interface Message {
-    send(data: Buffer): void
+  export interface Message<T> {
+    send(data: T): void
   }
 
   export interface Channel {
     open(): void
     close(): void
-    addMessage(opts: MessageOpts): Message
+    addMessage<T>(opts: MessageOpts<T>): Message<T>
   }
 
   export default class Protomux {
