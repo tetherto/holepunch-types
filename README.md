@@ -21,16 +21,16 @@ bun add holepunch-types
 Once installed, the type definitions will be automatically available when you import the corresponding modules:
 
 ```typescript
-import Autobase from "autobase";
-import Hyperswarm from "hyperswarm";
-import BlindPairing from "blind-pairing";
-import ReadyResource from "ready-resource";
-import Corestore from "corestore";
-import Hyperbee from "hyperbee";
-import Hyperblobs from "hyperblobs";
-import Hyperdrive from "hyperdrive";
-import * as b4a from "b4a";
-import { encode, decode } from "z32";
+import Autobase from 'autobase'
+import Hyperswarm from 'hyperswarm'
+import BlindPairing from 'blind-pairing'
+import ReadyResource from 'ready-resource'
+import Corestore from 'corestore'
+import Hyperbee from 'hyperbee'
+import Hyperblobs from 'hyperblobs'
+import Hyperdrive from 'hyperdrive'
+import * as b4a from 'b4a'
+import { encode, decode } from 'z32'
 
 // TypeScript will now provide full type support for these modules
 ```
@@ -87,27 +87,27 @@ bun add hyperswarm hyperbee
 
 ```typescript
 // index.ts
-import Hyperswarm from "hyperswarm";
-import Hyperbee from "hyperbee";
-import * as b4a from "b4a";
+import Hyperswarm from 'hyperswarm'
+import Hyperbee from 'hyperbee'
+import * as b4a from 'b4a'
 
 // Full TypeScript support with autocomplete!
 const swarm = new Hyperswarm({
   keyPair: crypto.keyPair(), // Properly typed
-  maxPeers: 10,
-});
+  maxPeers: 10
+})
 
 const bee = new Hyperbee(core, {
-  keyEncoding: "utf-8",
-  valueEncoding: "utf-8",
-});
+  keyEncoding: 'utf-8',
+  valueEncoding: 'utf-8'
+})
 
-swarm.on("connection", (connection, peerInfo) => {
+swarm.on('connection', (connection, peerInfo) => {
   // Both connection and peerInfo are fully typed
-  console.log("Connected to peer:", b4a.toString(peerInfo.publicKey, "hex"));
-});
+  console.log('Connected to peer:', b4a.toString(peerInfo.publicKey, 'hex'))
+})
 
-await swarm.join(b4a.from("chat-room", "utf-8"));
+await swarm.join(b4a.from('chat-room', 'utf-8'))
 ```
 
 ### 8. Build and run your app
