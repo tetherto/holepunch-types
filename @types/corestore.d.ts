@@ -17,6 +17,10 @@ declare module 'corestore' {
     append(blocks: ReadonlyArray<Uint8Array> | Uint8Array): Promise<void>
     clear(start: number, end?: number, opts?: Record<string, unknown>): Promise<void>
     has(start: number, end?: number): Promise<boolean>
+    download(range: { readonly start: number; readonly end: number }): {
+      done(): Promise<void>
+      destroy(): void
+    }
     getUserData(key: string): Promise<Buffer | null>
     setUserData(key: string, value: Uint8Array): Promise<void>
     on(event: string, handler: (...args: unknown[]) => void): void
