@@ -17,6 +17,7 @@ declare module 'hyperblobs' {
     write(chunk: Uint8Array): boolean
     end(): void
     once(event: 'close' | 'drain' | 'error', listener: (err?: Error) => void): void
+    off(event: 'drain', listener: () => void): void
   }
 
   export default class Hyperblobs {
@@ -32,6 +33,9 @@ declare module 'hyperblobs' {
     get(id: BlobId, opts?: { wait?: boolean; timeout?: number }): Promise<Buffer | null>
     clear(id: BlobId, opts?: Record<string, unknown>): Promise<void>
     createWriteStream(opts?: { blockSize?: number }): HyperblobsWriteStream
-    createReadStream(id: BlobId, opts?: { wait?: boolean; timeout?: number }): AsyncIterable<Buffer>
+    createReadStream(
+      id: BlobId,
+      opts?: { wait?: boolean; timeout?: number }
+    ): AsyncIterable<Buffer> & { destroy(error?: Error): void }
   }
 }

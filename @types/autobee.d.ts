@@ -126,7 +126,6 @@ declare module 'autobee' {
   export interface AutobeeWriterInfo {
     readonly key: Buffer
     readonly length: number
-    readonly isIndexer: boolean
     readonly isRemoved: boolean
     readonly isOplog: boolean
   }
@@ -191,15 +190,20 @@ declare module 'autobee' {
       readonly peers: ReadonlyArray<{ readonly remoteLength: number }>
       on(event: 'upload', listener: (index: number) => void): void
       off(event: 'upload', listener: (index: number) => void): void
+      on(event: 'peer-add', listener: () => void): void
+      off(event: 'peer-add', listener: () => void): void
       on(event: 'peer-remove', listener: () => void): void
       off(event: 'peer-remove', listener: () => void): void
     }
     readonly system: AutobeeSystem
     // The reason passed to host.interrupt(), latched even when the throw is swallowed
     readonly interrupted: unknown
-    // Attached writers, local included. A writer enters the set with a 'writer' event.
     readonly activeWriters: Iterable<AutobeeWriter>
     readonly isIndexer: boolean
+    readonly trusted: {
+      isTrusted(writerKey: Buffer, reference: T): Promise<boolean>
+      mostRecentTrusted(target: T, reference: T | null): Promise<AutobeeOplogRef | null>
+    }
     readonly writers: {
       readonly writable: boolean
       has(hex: string): boolean
@@ -219,7 +223,6 @@ declare module 'autobee' {
     ): Promise<void>
     updated(): Promise<void>
     update(): Promise<void>
-    getMostRecentHead(): Promise<AutobeeOplogRef | undefined>
     flush(): Promise<void>
     replicate(...args: unknown[]): unknown
     openCore(key: Buffer): {
