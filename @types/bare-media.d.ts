@@ -29,6 +29,9 @@ declare module 'bare-media' {
     decode(input: Uint8Array, opts?: { maxFrames?: number }): Promise<Rgba>
     orientate(rgba: Rgba, opts: { file: Uint8Array }): Promise<Rgba>
     resize(rgba: Rgba, opts: { maxWidth?: number; maxHeight?: number }): Promise<Rgba>
-    encode(rgba: Rgba, opts: { mimetype: string }): Promise<Uint8Array>
+    encode(
+      rgba: Rgba,
+      opts: { mimetype: string; quality?: number; maxBytes?: number }
+    ): Promise<Uint8Array>
   }
 }
