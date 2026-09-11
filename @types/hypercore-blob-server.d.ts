@@ -16,7 +16,12 @@ declare module 'hypercore-blob-server' {
     readonly anyPort?: boolean
     readonly resolve?: (
       key: Buffer,
-      info: { readonly blob?: BlobId; readonly filename?: string }
+      info: {
+        readonly blob?: BlobId
+        readonly filename?: string
+        readonly head?: boolean
+        readonly range?: { readonly start: number; readonly end: number } | null
+      }
     ) =>
       | { readonly key?: Buffer; readonly encryptionKey?: Buffer }
       | null

@@ -52,9 +52,8 @@ import Hyperdrive from 'hyperdrive'
 `ready-guard` `rocksdb-native` `safety-catch` `scope-lock` `sodium-universal`
 `suspendify` `test-tmp` `watch-drive` `which-runtime` `z32`
 
-Plus a few ambient helpers: `@tetherto/swarmconf`,
-`@tetherto/qvac-lib-stats-system`, `Bare` globals, `Promise.withResolvers`, and
-`*.sql` / `*.wasm` module declarations.
+Plus a few ambient helpers: `web-streams-polyfill/dist/ponyfill.mjs`, `Bare`
+globals, `Promise.withResolvers`, and `*.sql` / `*.wasm` module declarations.
 
 Deliberately **not** covered: `ready-resource` (the module ships its own types)
 and `b4a` (typed by `@types/b4a`).

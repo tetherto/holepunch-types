@@ -13,9 +13,10 @@ declare module 'corestore' {
     ready(): Promise<void>
     close(): Promise<void>
     get(index: number, opts?: Record<string, unknown>): Promise<Buffer | null>
+    seek(bytes: number, opts?: Record<string, unknown>): Promise<[number, number] | null>
     append(blocks: ReadonlyArray<Uint8Array> | Uint8Array): Promise<void>
     clear(start: number, end?: number, opts?: Record<string, unknown>): Promise<void>
-    has(index: number): Promise<boolean>
+    has(start: number, end?: number): Promise<boolean>
     getUserData(key: string): Promise<Buffer | null>
     setUserData(key: string, value: Uint8Array): Promise<void>
     on(event: string, handler: (...args: unknown[]) => void): void
