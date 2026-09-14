@@ -1,6 +1,6 @@
 {
   "name": "holepunch-types",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "TypeScript type definitions for Holepunch ecosystem modules: autobase, blind-pairing, hyperswarm, z32, b4a, and more.",
   "types": "@types/index.d.ts",
   "exports": {
