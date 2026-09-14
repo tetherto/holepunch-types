@@ -25,6 +25,7 @@ declare module 'autobee' {
       target: T,
       reference: T | null
     ) => Promise<AutobeeOplogRef | null> | AutobeeOplogRef | null
+    readonly warmup?: (view: T) => Promise<void> | void
     readonly fastForward?: {
       // an object carrying `key` is read as a legacy pointer, so a head must be wrapped
       readonly boot?: {
