@@ -32,7 +32,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "lint": "prettier . --check",
-    "test": "tsc -p tsconfig.json --noEmit",
+    "test": "tsc -p tsconfig.json --noEmit && tsc -p test/tsconfig.json",
     "format": "prettier . --write"
   },
   "tsd": {

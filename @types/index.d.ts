@@ -1,4 +1,5 @@
 // Reference all type definition files
+/// <reference types="node" />
 /// <reference path="./autobase.d.ts" />
 /// <reference path="./autobee.d.ts" />
 /// <reference path="./bare-channel.d.ts" />
