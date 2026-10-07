@@ -14,3 +14,22 @@ declare module 'hyperdht/testnet.js' {
     opts?: { readonly teardown?: (fn: () => unknown) => void }
   ): Promise<Testnet>
 }
+
+declare module 'hyperdht' {
+  export interface UdxSocket {
+    bind(port: number, host: string): void
+    address(): { readonly host: string; readonly port: number }
+    close(): Promise<void>
+  }
+
+  export default class HyperDHT {
+    constructor(opts?: {
+      readonly bootstrap?: ReadonlyArray<{ readonly host: string; readonly port: number }>
+      readonly ephemeral?: boolean
+    })
+
+    readonly udx: { createSocket(): UdxSocket }
+
+    destroy(opts?: { readonly force?: boolean }): Promise<void>
+  }
+}

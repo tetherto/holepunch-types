@@ -26,6 +26,7 @@ declare module 'autobee' {
       reference: T | null
     ) => Promise<AutobeeOplogRef | null> | AutobeeOplogRef | null
     readonly warmup?: (view: T) => Promise<void> | void
+    readonly strictReindex?: boolean
     readonly fastForward?: {
       // an object carrying `key` is read as a legacy pointer, so a head must be wrapped
       readonly boot?: {
@@ -56,6 +57,8 @@ declare module 'autobee' {
     readonly value: Buffer | null
     readonly key: Buffer
     readonly length: number
+    readonly timestamp: number
+    readonly optimistic?: boolean
   }
 
   export interface BeeWriteBatch {

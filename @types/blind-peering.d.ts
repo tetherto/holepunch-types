@@ -15,6 +15,7 @@ declare module 'blind-peering' {
     readonly remotePublicKey: Buffer
     readonly connected: boolean
     readonly connects: number
+    readonly uploaded: number
     readonly channel?: BlindPeerChannel | null
   }
 

@@ -4,10 +4,12 @@ declare module 'hyperswarm' {
 
   export interface SwarmTopic {
     flushed(): Promise<void>
+    destroy(): Promise<void>
   }
 
   // The per-topic discovery behind the sessions swarm.join hands out.
   export interface PeerDiscovery {
+    readonly topic: Buffer
     flushed(): Promise<boolean>
     refresh(): Promise<boolean>
   }
@@ -52,6 +54,8 @@ declare module 'hyperswarm' {
       // per construction — peers would see a new key every restart.
       readonly keyPair?: KeyPair | undefined
     })
+    readonly keyPair: KeyPair
+    readonly suspended: boolean
     readonly connections: Set<Duplex>
     // Connected peers keyed by hex public key; PeerInfo carries the Noise key.
     readonly peers: Map<string, { readonly publicKey: Buffer }>
@@ -76,12 +80,14 @@ declare module 'hyperswarm' {
       }>
       addNode(node: { readonly host: string; readonly port: number }): void
       on(event: string, listener: (...args: ReadonlyArray<unknown>) => void): void
+      destroy(opts?: { readonly force?: boolean }): Promise<void>
     }
     join(topic: Buffer, opts?: { readonly server?: boolean; readonly client?: boolean }): SwarmTopic
     leave(topic: Buffer): Promise<void>
     topics(): IterableIterator<PeerDiscovery>
+    status(topic: Buffer): PeerDiscovery | null
     suspend(opts?: { readonly log?: (msg: string) => void }): Promise<void>
     resume(opts?: { readonly log?: (msg: string) => void }): Promise<void>
-    destroy(): Promise<void>
+    destroy(opts?: { readonly force?: boolean }): Promise<void>
   }
 }
