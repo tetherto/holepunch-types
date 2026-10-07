@@ -17,11 +17,16 @@ declare module 'keet-identity-key' {
     static generateMnemonic(): string
     static from(root: { mnemonic: string }): Promise<IdentityKey>
     static attestDevice(publicKey: Buffer, parent: KeyPair, proof: Buffer): Buffer
+    static attestData(attestedData: Buffer, keyPair: KeyPair, proof: Buffer): Buffer
     static verify(
       proof: Uint8Array,
       attestedData: Uint8Array | null,
       opts?: VerifyOptions
     ): VerifiedProof | null
+    readonly keyChain: {
+      get(path: ReadonlyArray<number>): KeyPair
+      getSymmetricKey(path: ReadonlyArray<string>): Buffer
+    }
     get identityPublicKey(): Buffer
     bootstrap(device: Buffer): Promise<Buffer>
   }

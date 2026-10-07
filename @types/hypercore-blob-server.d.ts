@@ -36,6 +36,7 @@ declare module 'hypercore-blob-server' {
     readonly filename?: string
     readonly type?: string
     readonly url?: boolean
+    readonly drive?: Buffer
   }
 
   export default class HypercoreBlobServer {

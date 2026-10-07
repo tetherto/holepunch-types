@@ -21,6 +21,8 @@ declare module 'corestore' {
       done(): Promise<void>
       destroy(): void
     }
+    update(opts?: { readonly wait?: boolean }): Promise<boolean>
+    compact(): Promise<void>
     getUserData(key: string): Promise<Buffer | null>
     setUserData(key: string, value: Uint8Array): Promise<void>
     on(event: string, handler: (...args: unknown[]) => void): void
@@ -48,6 +50,7 @@ declare module 'corestore' {
     session(opts?: Record<string, unknown>): Corestore
     get(opts: { name: string; encryptionKey?: Buffer }): Hypercore
     get(opts: { key: Buffer; encryptionKey?: Buffer }): Hypercore
+    get(opts: { keyPair: import('hypercore-crypto').KeyPair; encryptionKey?: Buffer }): Hypercore
     get(key: Buffer): Hypercore
     // a boolean opens a fresh protocol stream (isInitiator) for piping two stores directly
     replicate(target: Duplex | boolean): Duplex

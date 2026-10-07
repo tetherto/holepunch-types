@@ -27,7 +27,13 @@ declare module 'protomux' {
 
   export default class Protomux {
     static from(stream: MuxStream): Protomux
+    readonly stream: {
+      once(event: 'close', listener: () => void): unknown
+      off(event: 'close', listener: () => void): unknown
+    }
     createChannel(opts: ChannelOpts): Channel | null
+    pair(opts: { readonly protocol: string; readonly id?: Buffer | null }, notify: () => void): void
+    unpair(opts: { readonly protocol: string; readonly id?: Buffer | null }): void
   }
 }
 

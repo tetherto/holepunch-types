@@ -29,5 +29,8 @@ declare module 'hypercore-storage' {
     readonly rocks: { columnFamily(name: string): unknown }
     close(): Promise<void>
     compact(opts?: CompactOptions): Promise<void>
+    hasCore(discoveryKey: Buffer, opts?: { readonly ifMigrated?: boolean }): Promise<boolean>
+    suspend(opts?: { readonly log?: (msg: string) => void }): Promise<void>
+    resume(): Promise<void>
   }
 }
